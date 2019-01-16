@@ -44,4 +44,4 @@ if (module.hot) {
   });
 }
 
-console.log("In the browser console, also suckling on a duckling?!?");
+// console.log("In the browser console, also suckling on a duckling?!?");
