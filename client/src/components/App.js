@@ -1,45 +1,68 @@
 import React from "react";
-import Person from "./Person";
-
 import "./App.pcss";
+import personService from "../services/person";
+import PersonList from "./PersonList";
+import AddPersonForm from "./AddPersonForm";
 
 class App extends React.Component {
   state = {
-    persons: [
-      {
-        id: "one",
-        firstName: "Keke",
-        lastName: "Kalifornia",
-        gender: "m",
-        age: 25
-      },
-      {
-        id: "two",
-        firstName: "Ana",
-        lastName: "Stiletti",
-        gender: "m",
-        age: 29
-      },
-      {
-        id: "three",
-        firstName: "Ruusu",
-        lastName: "Pubi",
-        gender: "f",
-        age: 45
-      }
-    ]
+    persons: []
+  };
+
+  async componentDidMount() {
+    const persons = await personService.getPersons();
+
+    this.setState(() => ({
+      persons
+    }));
+  }
+
+  firePerson = id => {
+    return this.setState(state => {
+      return {
+        persons: state.persons.filter(p => p.id !== id)
+      };
+    });
+  };
+
+  hirePerson = person => {
+    return this.setState(state => {
+      return {
+        persons: state.persons.concat([person])
+      };
+    });
   };
 
   render() {
     const { persons } = this.state;
 
+    const isGood = person => {
+      return person.gender === "m" && person.age < 30;
+    };
+
+    const goodPersons = persons.filter(isGood);
+    const badPersons = persons.filter(p => !isGood(p));
+
     return (
       <div>
         <h1>Jankon Betoni ERP</h1>
 
-        {persons.map(person => (
-          <Person person={person} key={person.id} />
-        ))}
+        <AddPersonForm hirePerson={this.hirePerson} />
+
+        <h2>Bad people</h2>
+        <PersonList
+          firePerson={this.firePerson}
+          showMetaData
+          type="bad"
+          persons={badPersons}
+        />
+
+        <h2>Goodish people</h2>
+        <PersonList
+          firePerson={this.firePerson}
+          type="good"
+          persons={goodPersons}
+        />
       </div>
     );
   }
