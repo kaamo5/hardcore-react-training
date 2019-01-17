@@ -1,8 +1,9 @@
 import React from "react";
 import "./App.pcss";
-import PersonList from "./PersonList";
-import AddPersonForm from "./AddPersonForm";
 import Loading from "./Loading";
+import IndexPage from "./containers/IndexPageContainer";
+import PersonPage from "./containers/PersonPageContainer";
+import { Switch, Route } from "react-router";
 
 class App extends React.Component {
   async componentDidMount() {
@@ -11,31 +12,17 @@ class App extends React.Component {
   }
 
   render() {
-    const { persons, hirePerson, firePerson, loading } = this.props;
-
-    const isGood = person => {
-      return person.gender === "m" && person.age < 30;
-    };
-
-    const goodPersons = persons.filter(isGood);
-    const badPersons = persons.filter(p => !isGood(p));
+    const { loading } = this.props;
 
     return (
       <div>
         {loading && <Loading />}
+
         <h1>Jankon Betoni ERP</h1>
-        <AddPersonForm hirePerson={hirePerson} />
-
-        <h2>Bad people</h2>
-        <PersonList
-          firePerson={firePerson}
-          showMetaData
-          type="bad"
-          persons={badPersons}
-        />
-
-        <h2>Goodish people</h2>
-        <PersonList firePerson={firePerson} type="good" persons={goodPersons} />
+        <Switch>
+          <Route path="/" exact component={IndexPage} />
+          <Route path="/person/:id" component={PersonPage} />
+        </Switch>
       </div>
     );
   }

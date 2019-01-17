@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./Person.pcss";
 import Button from "./Button";
+import { Link } from "react-router-dom";
 
 import cx from "classnames";
 
@@ -24,6 +25,7 @@ const Person = props => {
         >
           LOMAUTA
         </Button>
+        <Link to={`/person/${person.id}`}>Tarkastele henkilön tietoja</Link>
       </div>
     </div>
   );
