@@ -4,16 +4,18 @@ import personService from "../services/person";
 import PersonList from "./PersonList";
 import AddPersonForm from "./AddPersonForm";
 
+import { List } from "immutable";
+
 class App extends React.Component {
   state = {
-    persons: []
+    persons: List()
   };
 
   async componentDidMount() {
     const persons = await personService.getPersons();
 
     this.setState(() => ({
-      persons
+      persons: List(persons)
     }));
   }
 
@@ -28,7 +30,7 @@ class App extends React.Component {
   hirePerson = person => {
     return this.setState(state => {
       return {
-        persons: state.persons.concat([person])
+        persons: state.persons.push(person)
       };
     });
   };

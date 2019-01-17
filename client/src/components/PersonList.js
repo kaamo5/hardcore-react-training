@@ -2,13 +2,14 @@ import React from "react";
 import Person from "./Person";
 import styles from "./PersonList.pcss";
 import PropTypes from "prop-types";
+import ImmutablePropTypes from "react-immutable-proptypes";
 import cx from "classnames";
 
 const PersonList = props => {
   const { persons, type, showMetaData, firePerson } = props;
 
   const averageAge =
-    persons.reduce((r, person) => r + person.age, 0) / persons.length;
+    persons.reduce((r, person) => r + person.age, 0) / persons.count();
 
   const classes = cx(styles.box, {
     [styles.bad]: type === "bad",
@@ -20,7 +21,7 @@ const PersonList = props => {
       {showMetaData && (
         <>
           <p>Avarage age: {averageAge.toFixed(2)}</p>
-          <p>Number of people: {persons.length}</p>
+          <p>Number of people: {persons.count()}</p>
         </>
       )}
 
@@ -31,9 +32,9 @@ const PersonList = props => {
   );
 };
 
-PersonList.prototype = {
+PersonList.propTypes = {
   firePerson: PropTypes.func.isRequired,
-  persons: PropTypes.array.isRequired,
+  persons: ImmutablePropTypes.list.isRequired,
   showMetaData: PropTypes.bool.isRequired
 };
 
