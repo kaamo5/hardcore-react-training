@@ -10,6 +10,16 @@ const Button = styled.button`
     color: white;
   }
 
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+
+    &:hover {
+      background-color: white;
+      color: black;
+    }
+  }
+
   ${props =>
     props.block &&
     `

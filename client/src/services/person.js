@@ -8,16 +8,30 @@ const getPersons = async () => {
     console.log(e);
     throw e;
   }
+};
 
-  // return axios
-  //   .get(`${process.env.REACT_APP_API}/person`)
-  //   .then(response => response.data)
-  //   .catch(e => {
-  //     console.log(e);
-  //     throw e;
-  //   });
+const hirePerson = async person => {
+  try {
+    const ret = await axios.post(`${process.env.REACT_APP_API}/person`, person);
+    return ret.data;
+  } catch (e) {
+    console.log(e);
+    throw e;
+  }
+};
+
+const firePerson = async id => {
+  try {
+    const ret = await axios.delete(`${process.env.REACT_APP_API}/person/${id}`);
+    return id;
+  } catch (e) {
+    console.log(e);
+    throw e;
+  }
 };
 
 export default {
-  getPersons
+  getPersons,
+  hirePerson,
+  firePerson
 };

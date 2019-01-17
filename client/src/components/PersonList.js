@@ -25,16 +25,18 @@ const PersonList = props => {
         </>
       )}
 
-      {persons.map(person => (
-        <Person firePerson={firePerson} person={person} key={person.id} />
-      ))}
+      {persons
+        .map(person => (
+          <Person firePerson={firePerson} person={person} key={person.id} />
+        ))
+        .toList()}
     </div>
   );
 };
 
 PersonList.propTypes = {
   firePerson: PropTypes.func.isRequired,
-  persons: ImmutablePropTypes.list.isRequired,
+  persons: ImmutablePropTypes.map.isRequired,
   showMetaData: PropTypes.bool.isRequired
 };
 

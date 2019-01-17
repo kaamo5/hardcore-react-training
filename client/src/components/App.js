@@ -1,42 +1,17 @@
 import React from "react";
 import "./App.pcss";
-import personService from "../services/person";
 import PersonList from "./PersonList";
 import AddPersonForm from "./AddPersonForm";
-
-import { List } from "immutable";
+import Loading from "./Loading";
 
 class App extends React.Component {
-  state = {
-    persons: List()
-  };
-
   async componentDidMount() {
-    const persons = await personService.getPersons();
-
-    this.setState(() => ({
-      persons: List(persons)
-    }));
+    const { getPersons } = this.props;
+    getPersons();
   }
 
-  firePerson = id => {
-    return this.setState(state => {
-      return {
-        persons: state.persons.filter(p => p.id !== id)
-      };
-    });
-  };
-
-  hirePerson = person => {
-    return this.setState(state => {
-      return {
-        persons: state.persons.push(person)
-      };
-    });
-  };
-
   render() {
-    const { persons } = this.state;
+    const { persons, hirePerson, firePerson, loading } = this.props;
 
     const isGood = person => {
       return person.gender === "m" && person.age < 30;
@@ -47,24 +22,20 @@ class App extends React.Component {
 
     return (
       <div>
+        {loading && <Loading />}
         <h1>Jankon Betoni ERP</h1>
-
-        <AddPersonForm hirePerson={this.hirePerson} />
+        <AddPersonForm hirePerson={hirePerson} />
 
         <h2>Bad people</h2>
         <PersonList
-          firePerson={this.firePerson}
+          firePerson={firePerson}
           showMetaData
           type="bad"
           persons={badPersons}
         />
 
         <h2>Goodish people</h2>
-        <PersonList
-          firePerson={this.firePerson}
-          type="good"
-          persons={goodPersons}
-        />
+        <PersonList firePerson={firePerson} type="good" persons={goodPersons} />
       </div>
     );
   }

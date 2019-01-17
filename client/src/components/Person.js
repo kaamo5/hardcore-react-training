@@ -17,7 +17,11 @@ const Person = props => {
         <strong>{person.lastName}</strong>, {person.firstName} ({person.age})
       </div>
       <div className="actions">
-        <Button block onClick={() => firePerson(person.id)}>
+        <Button
+          block
+          disabled={person.isBeingFired}
+          onClick={() => firePerson(person.id)}
+        >
           LOMAUTA
         </Button>
       </div>
